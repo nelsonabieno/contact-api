@@ -4,4 +4,6 @@ Rails.application.routes.draw do
       sessions: 'users/sessions'
   }
   resources :contact
+
+  post '/role' => 'role#create'
 end
