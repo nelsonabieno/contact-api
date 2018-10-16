@@ -1,9 +1,8 @@
 class ContactController < ApplicationController
-  before_action :set_contact, only: [:show,:update, :destroy]
 
   def index
     @contacts = Contact.all
-    @contacts.to_json
+    render json: { contacts: @contacts }, status: :ok
   end
 
   def new
@@ -11,13 +10,17 @@ class ContactController < ApplicationController
   end
 
   def create
-    @contact = Contact.new(contact_params)
-    if @contact.save!
-      response.status(:ok)
+    email = Contact.find_by_email(contact_params['email'])
+    if email
+      render json: { message: 'email already exist' }, status: :conflict
     else
-      response.send.status(500)
+      contact = Contact.new(contact_params)
+      if contact.save!
+        render json: { message: 'contact created!' }, status: :created
+      else
+        render json: { message: 'Ops! Contact wasn\'t saved' }, status: 500
+      end
     end
-
   end
 
   def show
@@ -36,15 +39,16 @@ class ContactController < ApplicationController
   private
 
   def contact_params
-   @contact_params = params.permit(
+   params.permit(
+      :id,
       :email,
       :address,
       :state,
       :country,
       :invitation_medium,
       :email_status,
-      :sms_status
+      :sms_status,
+      :user_id
     )
   end
-
 end
