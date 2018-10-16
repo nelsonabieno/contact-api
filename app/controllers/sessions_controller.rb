@@ -19,7 +19,6 @@ class SessionsController < ApplicationController
        user.update({ status: false })
        @current_user = nil
        render json: { message: 'You\'re out!' }, status: :no_content
-
     else
       render json: { message: 'record not found' }, status: :unauthorized
     end

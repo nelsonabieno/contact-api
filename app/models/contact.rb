@@ -1,4 +1,5 @@
 class Contact < ApplicationRecord
+  # TODO EMAIL VALIDATION
   belongs_to :user
 
   validates :user_id, presence:true
