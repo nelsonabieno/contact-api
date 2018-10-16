@@ -7,6 +7,6 @@ class RoleController < ApplicationController
 
   private
   def role_params
-    params.permit(:name)
+    params.permit(:id, :name)
   end
 end
