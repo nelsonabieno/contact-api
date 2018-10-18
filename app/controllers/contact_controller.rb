@@ -14,11 +14,11 @@ class ContactController < ApplicationController
     if email
       render json: { message: 'email already exist' }, status: :conflict
     else
-      contact = Contact.new(contact_params)
-      if contact.save!
+      @contact = Contact.new(contact_params)
+      if @contact.save
         render json: { message: 'contact created!' }, status: :created
       else
-        render json: { message: 'Ops! Contact wasn\'t saved' }, status: 500
+        render json: { message: @contact.errors.full_messages }, status: :internal_server_error
       end
     end
   end

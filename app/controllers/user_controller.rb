@@ -13,7 +13,7 @@ class UserController < ApplicationController
       if @user.save
         render  json: { user:  @user, message: 'User successfully created' }, status: :created
       else
-        render json: { errors:  @user.errors }, status: 500
+        render json: { errors:  @user.errors.full_messages }, status: :internal_server_error
       end
     end
   end
