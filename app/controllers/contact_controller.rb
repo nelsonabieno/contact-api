@@ -15,7 +15,8 @@ class ContactController < ApplicationController
       render json: { message: 'email already exist' }, status: :conflict
     else
       @contact = Contact.new(contact_params)
-      if @contact.save
+      if @contact.valid?
+        @contact.save
         render json: { message: 'contact created!' }, status: :created
       else
         render json: { message: @contact.errors.full_messages }, status: :internal_server_error

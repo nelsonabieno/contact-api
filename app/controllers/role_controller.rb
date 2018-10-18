@@ -2,7 +2,8 @@ class RoleController < ApplicationController
   def create
     if current_user.try(:role).try(:name).to_s.strip == 'super'
       @role = Role.new(role_params)
-      if @role.save
+      if @role.valid?
+        @role.save
         render json: { role: @role, message: 'A new role was created' }, status: :created
       else
         render json: { message: @role.errors.full_messages }, status: :bad_request

@@ -10,7 +10,8 @@ class UserController < ApplicationController
       render json: { message: 'Email already exist' }, status: :conflict
     else
       @user = User.new(users_params)
-      if @user.save
+      if @user.valid?
+        @user.save
         render  json: { user:  @user, message: 'User successfully created' }, status: :created
       else
         render json: { errors:  @user.errors.full_messages }, status: :internal_server_error
