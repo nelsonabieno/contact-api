@@ -5,6 +5,11 @@ class SessionsController < ApplicationController
     @user = User.find_by(email: auth_params[:email])
     if @user
       @user.authenticate(auth_params[:password])
+      puts "====== ENV['AUTH_SECRET']====="
+      puts ENV['AUTH_SECRET']
+      puts "========= SESSIONS @user.id "
+      puts @user.id
+      puts "-------"
       jwt = Auth.issue({ user: @user.id })
       @user.update({ status: true })
       render json: { user: @user, jwt: jwt, message: 'You\'re in!' }

@@ -4,6 +4,15 @@ class Auth
   ALGORITHM = 'HS256'
 
   def self.issue(payload)
+    puts "======my secret====="
+    puts auth_secret
+    puts "======payload====="
+    puts payload
+    puts "======ALGORITHM====="
+    puts ALGORITHM
+    puts "====== ENV['AUTH_SECRET']====="
+    puts  ENV['AUTH_SECRET']
+
     JWT.encode(
       payload,
       auth_secret,
