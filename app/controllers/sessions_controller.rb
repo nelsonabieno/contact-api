@@ -7,9 +7,9 @@ class SessionsController < ApplicationController
       @user.authenticate(auth_params[:password])
       jwt = Auth.issue({ user: @user.id })
       @user.update({ status: true })
-      render json: { jwt: jwt, message: 'You\'re in!' }
+      render json: { user: @user, jwt: jwt, message: 'You\'re in!' }
     else
-      render json: { user: @user, message: 'Invalid login details' }, status: :bad_request
+      render json: { message: 'Invalid login details' }, status: :bad_request
     end
   end
 
