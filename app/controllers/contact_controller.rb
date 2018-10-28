@@ -1,13 +1,12 @@
 class ContactController < ApplicationController
+  before_action :contact_params
+  before_action :find_contact, only:[:show, :update, :destroy]
 
   def index
     @contacts = Contact.all
     render json: { contacts: @contacts }, status: :ok
   end
 
-  def new
-
-  end
 
   def create
     email = Contact.find_by_email(contact_params['email'])
@@ -17,7 +16,7 @@ class ContactController < ApplicationController
       @contact = Contact.new(contact_params)
       if @contact.valid?
         @contact.save
-        render json: { message: 'contact created!' }, status: :created
+        render json: { message: 'Contact created!' }, status: :created
       else
         render json: { message: @contact.errors.full_messages }, status: :internal_server_error
       end
@@ -25,23 +24,30 @@ class ContactController < ApplicationController
   end
 
   def show
-
+    render json: { users: @contact }, status: :ok
   end
 
 
   def update
-
+    if @contact.update(contact_params)
+      render json: { user: @contact, message: 'Contact update successfully'}, status: :ok
+    else
+      render json: { errors: @contact.errors.full_messages }, status: :internal_server_error
+    end
   end
 
   def destroy
-
+    if @contact.destroy
+      render json: { message: 'Contact successfully deleted' }, status: :ok
+    else
+      render json: { message: @contact.errors.full_messages }, status: :internal_server_error
+    end
   end
 
   private
 
   def contact_params
    params.permit(
-      :id,
       :email,
       :address,
       :state,
@@ -51,5 +57,14 @@ class ContactController < ApplicationController
       :sms_status,
       :user_id
     )
+  end
+
+  def find_contact
+    @contact = Contact.find(params[:id])
+    if @contact
+      @contact
+    else
+      render json: { message: 'we couldn\'t find this contact' }, status: :not_found
+    end
   end
 end
