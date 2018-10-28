@@ -8,6 +8,6 @@ class Contact < ApplicationRecord
   validates :state, presence:true, length: {minimum:3, maximum: 10}
   validates :country, presence:true
   validates :invitation_medium, presence:true
-  validates :email_status, presence:true
-  validates :sms_status, presence:true
+  # validates :email_status, presence:true
+  # validates :sms_status, presence:true
 end
